@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Favorite Song — Liudmila Poliakova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Body ── */
+    body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      background-color: #0f0f0f;
+      color: #e8e8e8;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated background dots ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, #ffffff08 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Glow blob ── */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 500px;
+      background: radial-gradient(ellipse, rgba(180, 100, 255, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      animation: blobMove 10s ease-in-out infinite;
+    }
+    @keyframes blobMove {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(60px); }
+    }
+
+    /* ── Page wrapper ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 64px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Tag ── */
+    .tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #b47aff;
+      margin-bottom: 18px;
+      border: 1px solid #b47aff44;
+      padding: 5px 16px;
+      border-radius: 100px;
+    }
+
+    /* ── Title ── */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.1;
+      margin-bottom: 6px;
+      color: #ffffff;
+    }
+    h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: #b47aff;
+    }
+
+    .byline {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 48px;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Song info card ── */
+    .song-card {
+      width: 100%;
+      max-width: 720px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .song-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, #b47aff, #7a4fff);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .song-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .song-info p {
+      font-size: 0.82rem;
+      color: #777;
+    }
+
+    /* ── Video wrapper ── */
+    .video-wrapper {
+      width: 100%;
+      max-width: 720px;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #2a2a2a;
+      margin-bottom: 16px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px #ffffff08;
+      position: relative;
+    }
+
+    /* Thumbnail fallback shown when opened locally */
+    .video-wrapper .local-notice {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: #111;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+      padding: 24px;
+    }
+    .local-notice p {
+      font-size: 0.9rem;
+      color: #888;
+    }
+    .local-notice a {
+      color: #b47aff;
+      font-size: 0.9rem;
+    }
+
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .video-note {
+      font-size: 0.75rem;
+      color: #444;
+      margin-bottom: 56px;
+      text-align: center;
+    }
+    .video-note a { color: #b47aff; }
+
+    /* ── Divider ── */
+    .divider {
+      width: 100%;
+      max-width: 720px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #2a2a2a, transparent);
+      margin-bottom: 48px;
+    }
+
+    /* ── Animation section ── */
+    .anim-section {
+      width: 100%;
+      max-width: 720px;
+      text-align: center;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #b47aff;
+      margin-bottom: 10px;
+    }
+
+    .anim-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .anim-section p {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 36px;
+    }
+
+    /* ── Animation stage ── */
+    .anim-stage {
+      width: 100%;
+      height: 100px;
+      background: #141414;
+      border: 1px solid #222;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    /* track line */
+    .anim-stage::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 16px; right: 16px;
+      height: 1px;
+      background: #2a2a2a;
+      transform: translateY(-50%);
+    }
+
+    #anim-box {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #b47aff, #7a4fff);
+      border-radius: 10px;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      box-shadow: 0 0 20px rgba(180,122,255,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    /* ── Button ── */
+    .btn {
+      padding: 13px 36px;
+      font-size: 0.85rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, #b47aff, #7a4fff);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn:hover { opacity: 0.88; transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 72px;
+      font-size: 0.75rem;
+      color: #333;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <span class="tag">Visual Studio Assignment</span>
+  <h1>My Favorite<br><em>Song</em></h1>
+  <p class="byline">by Liudmila Poliakova &mdash; Academy of Learning College</p>
+
+  <!-- Song info -->
+  <div class="song-card">
+    <div class="song-icon">🎵</div>
+    <div class="song-info">
+      <h3>Bohemian Rhapsody</h3>
+      <p>Queen &mdash; 1975 &middot; Rock / Classic</p>
+    </div>
+  </div>
+
+  <!-- YouTube embed -->
+  <div class="video-wrapper">
+    <iframe
+      src="https://www.youtube.com/embed/fJ9rUzIMcZQ"
+      title="Bohemian Rhapsody – Queen"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <p class="video-note">
+    If the video shows an error, open this file from a web server or
+    <a href="https://www.youtube.com/watch?v=fJ9rUzIMcZQ" target="_blank">watch it directly on YouTube ↗</a>
+  </p>
+
+  <div class="divider"></div>
+
+  <!-- JS Animation -->
+  <div class="anim-section">
+    <p class="section-label">JavaScript</p>
+    <h2>Animation Demo</h2>
+    <p>A box that bounces across the stage using JavaScript and setInterval.</p>
+
+    <div class="anim-stage">
+      <div id="anim-box">🎸</div>
+    </div>
+
+    <button class="btn" onclick="startAnimation()">▶ Play Animation</button>
+  </div>
+
+  <footer>Academy of Learning College &mdash; Visual Studio Assignment &mdash; 2026</footer>
+
+</div>
+
+<script>
+  // JavaScript animation — moves the box across the stage and bounces back
+  var animating = false;
+
+  function startAnimation() {
+    if (animating) return;
+    animating = true;
+
+    var box   = document.getElementById("anim-box");
+    var stage = box.parentElement;
+    var pos   = 0;
+    var dir   = 1;
+    var max   = stage.clientWidth - box.offsetWidth;
+
+    var id = setInterval(function () {
+      pos += 3 * dir;
+      box.style.left = pos + "px";
+
+      if (pos >= max) dir = -1;
+      if (pos <= 0) {
+        dir = 1;
+        clearInterval(id);
+        animating = false;
+      }
+    }, 8);
+  }
+</script>
+</body>
+</html>
