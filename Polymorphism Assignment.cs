@@ -1,4 +1,4 @@
-// Polymorphism Assignment - Combined Single File (for testing)
+// Polymorphism Assignment
 // Author: Liudmila Poliakova
 // Academy of Learning College
 
