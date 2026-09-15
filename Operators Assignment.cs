@@ -1,6 +1,5 @@
 // Operator Overloading Assignment
 // Author: Liudmila Poliakova
-// Academy of Learning College
 
 using System;
 
