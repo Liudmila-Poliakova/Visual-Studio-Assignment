@@ -1,0 +1,116 @@
+@* Views/Insuree/Create.cshtml *@
+@* Author: Liudmila Poliakova *@
+@* Requirement 2: The Quote field is NOT shown to the user - it is calculated automatically *@
+
+@model CarInsurance.Models.Insuree
+
+@{
+    ViewData["Title"] = "Get a Quote";
+}
+
+<h2>Get an Insurance Quote</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        @* Form posts to the Create action in InsureeController *@
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @* First Name *@
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            @* Last Name *@
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            @* Email Address *@
+            <div class="form-group">
+                <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+
+            @* Date of Birth *@
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" type="date" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+
+            @* Car Year *@
+            <div class="form-group">
+                <label asp-for="CarYear" class="control-label"></label>
+                <input asp-for="CarYear" class="form-control" />
+                <span asp-validation-for="CarYear" class="text-danger"></span>
+            </div>
+
+            @* Car Make *@
+            <div class="form-group">
+                <label asp-for="CarMake" class="control-label"></label>
+                <input asp-for="CarMake" class="form-control" />
+                <span asp-validation-for="CarMake" class="text-danger"></span>
+            </div>
+
+            @* Car Model *@
+            <div class="form-group">
+                <label asp-for="CarModel" class="control-label"></label>
+                <input asp-for="CarModel" class="form-control" />
+                <span asp-validation-for="CarModel" class="text-danger"></span>
+            </div>
+
+            @* DUI - Yes or No dropdown *@
+            <div class="form-group">
+                <label asp-for="DUI" class="control-label"></label>
+                <select asp-for="DUI" class="form-control">
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                </select>
+                <span asp-validation-for="DUI" class="text-danger"></span>
+            </div>
+
+            @* Speeding Tickets *@
+            <div class="form-group">
+                <label asp-for="SpeedingTickets" class="control-label"></label>
+                <input asp-for="SpeedingTickets" class="form-control" />
+                <span asp-validation-for="SpeedingTickets" class="text-danger"></span>
+            </div>
+
+            @* Coverage Type - Liability or Full Coverage *@
+            <div class="form-group">
+                <label asp-for="CoverageType" class="control-label">Coverage Type</label>
+                <select asp-for="CoverageType" class="form-control">
+                    <option value="false">Liability</option>
+                    <option value="true">Full Coverage</option>
+                </select>
+                <span asp-validation-for="CoverageType" class="text-danger"></span>
+            </div>
+
+            @* NOTE: The Quote field is intentionally hidden from the user *@
+            @* It is automatically calculated in the controller *@
+
+            @* Submit button *@
+            <div class="form-group">
+                <input type="submit" value="Get My Quote" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    @* Link back to the list of all insurees *@
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,59 @@
+@* Views/Insuree/Index.cshtml *@
+@* Author: Liudmila Poliakova *@
+@* Displays a list of all insurees *@
+
+@model IEnumerable<CarInsurance.Models.Insuree>
+
+@{
+    ViewData["Title"] = "All Insurees";
+}
+
+<h2>All Insurees</h2>
+
+<p>
+    @* Link to create a new insuree *@
+    <a asp-action="Create" class="btn btn-primary">Get New Quote</a>
+    @* Link to the admin view *@
+    <a asp-action="Admin" class="btn btn-secondary">Admin View</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
+            <th>@Html.DisplayNameFor(model => model.CarYear)</th>
+            <th>@Html.DisplayNameFor(model => model.CarMake)</th>
+            <th>@Html.DisplayNameFor(model => model.CarModel)</th>
+            <th>@Html.DisplayNameFor(model => model.DUI)</th>
+            <th>@Html.DisplayNameFor(model => model.SpeedingTickets)</th>
+            <th>@Html.DisplayNameFor(model => model.CoverageType)</th>
+            <th>@Html.DisplayNameFor(model => model.Quote)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @* Loop through each insuree and display their information *@
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.EmailAddress)</td>
+                <td>@Html.DisplayFor(modelItem => item.CarYear)</td>
+                <td>@Html.DisplayFor(modelItem => item.CarMake)</td>
+                <td>@Html.DisplayFor(modelItem => item.CarModel)</td>
+                <td>@Html.DisplayFor(modelItem => item.DUI)</td>
+                <td>@Html.DisplayFor(modelItem => item.SpeedingTickets)</td>
+                <td>@(item.CoverageType ? "Full Coverage" : "Liability")</td>
+                <td>@item.Quote.ToString("C")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

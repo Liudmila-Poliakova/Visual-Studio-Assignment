@@ -1,0 +1,35 @@
+@* Views/Insuree/Delete.cshtml *@
+@* Author: Liudmila Poliakova *@
+@* Confirms deletion of an insuree record *@
+
+@model CarInsurance.Models.Insuree
+
+@{
+    ViewData["Title"] = "Delete Insuree";
+}
+
+<h2>Delete Insuree</h2>
+<hr />
+
+<h3>Are you sure you want to delete this record?</h3>
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FirstName)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.FirstName)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.LastName)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.LastName)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EmailAddress)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.EmailAddress)</dd>
+
+    <dt class="col-sm-3">Quote</dt>
+    <dd class="col-sm-9">@Model.Quote.ToString("C") / month</dd>
+</dl>
+
+@* Confirm delete form *@
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
