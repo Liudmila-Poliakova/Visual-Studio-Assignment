@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Liudmila Poliakova | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── VARIABLES ── */
+    :root {
+      --bg:      #0d0d0d;
+      --surface: #161616;
+      --card:    #1e1e1e;
+      --border:  #2a2a2a;
+      --gold:    #c9a84c;
+      --gold2:   #e8c97a;
+      --white:   #f0ede6;
+      --muted:   #888;
+      --serif:   'Playfair Display', Georgia, serif;
+      --sans:    'Outfit', sans-serif;
+      --ease:    cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; }
+
+    /* ── CUSTOM CURSOR ── */
+    #cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform .1s, width .3s var(--ease), height .3s var(--ease), background .3s;
+      mix-blend-mode: difference;
+    }
+    #cursor.grow { width: 40px; height: 40px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 48px;
+      background: rgba(13,13,13,0);
+      backdrop-filter: blur(0px);
+      border-bottom: 1px solid transparent;
+      transition: background .4s, backdrop-filter .4s, border-color .4s;
+    }
+    nav.scrolled {
+      background: rgba(13,13,13,.85);
+      backdrop-filter: blur(16px);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--gold);
+      letter-spacing: .06em;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: .8rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      position: relative;
+      transition: color .3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width .3s var(--ease);
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 120px 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* animated background grid */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: .35;
+      animation: gridPan 20s linear infinite;
+    }
+    @keyframes gridPan {
+      from { background-position: 0 0; }
+      to   { background-position: 60px 60px; }
+    }
+
+    /* gold glow blob */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,.18) 0%, transparent 70%);
+      animation: blobPulse 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes blobPulse {
+      0%,100% { transform: scale(1) translate(0,0); }
+      50%      { transform: scale(1.15) translate(-30px, 30px); }
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: .75rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp .7s .2s var(--ease) forwards;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeUp .7s .4s var(--ease) forwards;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold2);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 28px 0 48px;
+      opacity: 0;
+      animation: fadeUp .7s .6s var(--ease) forwards;
+    }
+
+    .hero-btns {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp .7s .8s var(--ease) forwards;
+    }
+
+    .btn-gold {
+      padding: 13px 32px;
+      background: var(--gold);
+      color: #0d0d0d;
+      font-size: .82rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: background .3s, transform .2s;
+    }
+    .btn-gold:hover { background: var(--gold2); transform: translateY(-2px); }
+
+    .btn-outline {
+      padding: 13px 32px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .82rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: border-color .3s, color .3s, transform .2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--white); transform: translateY(-2px); }
+
+    /* scroll hint */
+    .scroll-hint {
+      position: absolute; bottom: 36px; left: 48px;
+      display: flex; align-items: center; gap: 12px;
+      font-size: .7rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--muted);
+      opacity: 0; animation: fadeUp .7s 1.2s var(--ease) forwards;
+    }
+    .scroll-hint::before {
+      content: '';
+      display: block; width: 40px; height: 1px;
+      background: var(--gold);
+      animation: linePulse 2s ease-in-out infinite;
+    }
+    @keyframes linePulse {
+      0%,100% { width: 40px; opacity: 1; }
+      50%      { width: 20px; opacity: .4; }
+    }
+
+    /* ── SHARED ── */
+    .section { padding: 100px 48px; }
+    .section-label {
+      font-size: .7rem; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 48px;
+    }
+    .section-title em { font-style: italic; color: var(--gold2); }
+
+    .divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    /* reveal util */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* ── ABOUT ── */
+    #about { background: var(--surface); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .skills-wrap { margin-top: 36px; }
+    .skills-wrap h4 {
+      font-size: .7rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .pills {
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    .pill {
+      padding: 6px 18px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: .8rem;
+      color: var(--muted);
+      transition: border-color .3s, color .3s, background .3s;
+    }
+    .pill:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,.08); }
+
+    /* stat boxes */
+    .stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .stat-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px 24px;
+      transition: border-color .3s, transform .3s;
+    }
+    .stat-box:hover { border-color: var(--gold); transform: translateY(-4px); }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label { font-size: .82rem; color: var(--muted); }
+
+    /* ── PROJECTS / GALLERY ── */
+    #projects { max-width: 1200px; margin: 0 auto; }
+
+    /* horizontal scroll strip */
+    .gallery-track-wrap {
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 64px;
+    }
+    .gallery-track-wrap::before,
+    .gallery-track-wrap::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0;
+      width: 80px; z-index: 2;
+      pointer-events: none;
+    }
+    .gallery-track-wrap::before { left: 0;  background: linear-gradient(90deg, var(--bg), transparent); }
+    .gallery-track-wrap::after  { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+
+    .gallery-track {
+      display: flex; gap: 16px;
+      animation: scrollTrack 30s linear infinite;
+      width: max-content;
+    }
+    .gallery-track:hover { animation-play-state: paused; }
+
+    @keyframes scrollTrack {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .gallery-thumb {
+      width: 280px; height: 180px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: none;
+      position: relative;
+    }
+    .gallery-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .5s var(--ease);
+      filter: brightness(.8) saturate(.9);
+    }
+    .gallery-thumb:hover img { transform: scale(1.06); filter: brightness(1) saturate(1); }
+    .gallery-thumb .thumb-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 10px 14px;
+      background: linear-gradient(transparent, rgba(0,0,0,.7));
+      font-size: .75rem; color: var(--white);
+      opacity: 0; transition: opacity .3s;
+    }
+    .gallery-thumb:hover .thumb-label { opacity: 1; }
+
+    /* project cards */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .proj-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform .35s var(--ease), border-color .35s, box-shadow .35s;
+    }
+    .proj-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold);
+      box-shadow: 0 20px 60px rgba(201,168,76,.12);
+    }
+
+    .proj-img {
+      height: 200px; overflow: hidden; position: relative;
+    }
+    .proj-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .5s var(--ease);
+      filter: brightness(.75);
+    }
+    .proj-card:hover .proj-img img { transform: scale(1.05); filter: brightness(.9); }
+
+    /* lightbox trigger overlay */
+    .proj-img .open-lb {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.4);
+      opacity: 0;
+      transition: opacity .3s;
+      font-size: .72rem; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .proj-card:hover .open-lb { opacity: 1; }
+
+    .proj-body { padding: 24px; }
+    .proj-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .proj-tag {
+      font-size: .68rem; letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      border-radius: 100px; color: var(--muted);
+    }
+    .proj-title {
+      font-family: var(--serif);
+      font-size: 1.3rem; margin-bottom: 10px;
+    }
+    .proj-desc { font-size: .88rem; color: var(--muted); margin-bottom: 20px; }
+    .proj-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .78rem; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--gold);
+      transition: gap .3s;
+    }
+    .proj-link:hover { gap: 14px; }
+    .proj-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ── LIGHTBOX ── */
+    #lightbox {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,.92);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+      backdrop-filter: blur(8px);
+      padding: 24px;
+    }
+    #lightbox.open { opacity: 1; pointer-events: all; }
+
+    .lb-inner {
+      position: relative;
+      max-width: 820px; width: 100%;
+      transform: scale(.92);
+      transition: transform .3s var(--ease);
+    }
+    #lightbox.open .lb-inner { transform: scale(1); }
+
+    .lb-img {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .lb-caption {
+      margin-top: 16px;
+      font-size: .82rem; color: var(--muted);
+      text-align: center; letter-spacing: .08em;
+    }
+
+    .lb-close {
+      position: absolute; top: -44px; right: 0;
+      background: none; border: none;
+      color: var(--white); font-size: 1.6rem;
+      cursor: none; line-height: 1;
+      transition: color .2s;
+    }
+    .lb-close:hover { color: var(--gold); }
+
+    .lb-prev, .lb-next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(201,168,76,.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: none;
+      transition: background .3s;
+      font-size: 1.1rem;
+    }
+    .lb-prev:hover, .lb-next:hover { background: rgba(201,168,76,.3); }
+    .lb-prev { left: -56px; }
+    .lb-next { right: -56px; }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .contact-inner {
+      max-width: 680px; margin: 0 auto; text-align: center;
+    }
+    .contact-links {
+      display: flex; flex-direction: column; gap: 0;
+      margin-top: 48px;
+      border-top: 1px solid var(--border);
+    }
+    .contact-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+      transition: background .2s;
+    }
+    .contact-row:hover { padding-left: 8px; }
+    .c-label { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+    .c-val { font-size: .92rem; color: var(--white); transition: color .3s; }
+    .contact-row:hover .c-val { color: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 28px 24px;
+      border-top: 1px solid var(--border);
+      font-size: .75rem; color: var(--muted);
+      letter-spacing: .08em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { gap: 20px; }
+      .hero, .section { padding-left: 24px; padding-right: 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .lb-prev { left: -16px; }
+      .lb-next { right: -16px; }
+      .scroll-hint { left: 24px; }
+    }
+    @media (max-width: 480px) {
+      .hero-btns { flex-direction: column; }
+      .stats { grid-template-columns: 1fr; }
+      .nav-links { gap: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+
+<!-- Lightbox -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div class="lb-inner">
+    <button class="lb-close" id="lb-close" aria-label="Close">&times;</button>
+    <button class="lb-prev" id="lb-prev" aria-label="Previous">&#8592;</button>
+    <button class="lb-next" id="lb-next" aria-label="Next">&#8594;</button>
+    <img class="lb-img" id="lb-img" src="" alt="" />
+    <p class="lb-caption" id="lb-caption"></p>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <span class="nav-logo">LP</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <span class="hero-eyebrow">Web Developer &mdash; Toronto, Canada</span>
+    <h1>Liudmila<br><em>Poliakova</em></h1>
+    <p class="hero-sub">Student at Academy of Learning College, building web projects with HTML, CSS &amp; JavaScript, and application projects with C# and ASP.NET Core.</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-gold">View Projects</a>
+      <a href="https://github.com/Liudmila-Poliakova" target="_blank" class="btn-outline">GitHub Profile ↗</a>
+    </div>
+  </div>
+  <span class="scroll-hint">Scroll to explore</span>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p class="section-label">About Me</p>
+      <h2 class="section-title">Learning to build<br>for the <em>web.</em></h2>
+      <p>I'm enrolled in a Software and Web development program at Academy of Learning College. I started with HTML, CSS, and JavaScript, and have since expanded into C# and ASP.NET Core, including object-oriented programming and building database-backed web applications with Entity Framework. I track all my work on GitHub.</p>
+      <p>I enjoy the hands-on process of building things from scratch and learning something new with every project.</p>
+      <div class="skills-wrap">
+        <h4>Technologies I've Learned</h4>
+        <div class="pills">
+          <span class="pill">HTML5</span>
+          <span class="pill">CSS3</span>
+          <span class="pill">JavaScript</span>
+          <span class="pill">Bootstrap</span>
+          <span class="pill">C#</span>
+          <span class="pill">ASP.NET Core MVC</span>
+          <span class="pill">Entity Framework</span>
+          <span class="pill">SQL Server</span>
+          <span class="pill">OOP</span>
+          <span class="pill">Git &amp; GitHub</span>
+          <span class="pill">Responsive Design</span>
+        </div>
+      </div>
+    </div>
+    <div class="stats reveal">
+      <div class="stat-box">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Repos on GitHub</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">1</div>
+        <div class="stat-label">Live Website</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Still Learning</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section class="section" id="projects">
+  <p class="section-label reveal">My Work</p>
+  <h2 class="section-title reveal">Projects</h2>
+
+  <!-- Scrolling image strip -->
+  <div class="gallery-track-wrap reveal">
+    <div class="gallery-track" id="gallery-track">
+      <!-- duplicated for seamless loop -->
+      <div class="gallery-thumb" data-lb="0">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80" alt="Academy Cinemas project screenshot"/>
+        <span class="thumb-label">Academy Cinemas</span>
+      </div>
+      <div class="gallery-thumb" data-lb="1">
+        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80" alt="Portfolio website screenshot"/>
+        <span class="thumb-label">Portfolio Website</span>
+      </div>
+      <div class="gallery-thumb" data-lb="2">
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80" alt="JavaScript projects"/>
+        <span class="thumb-label">JavaScript Projects</span>
+      </div>
+      <div class="gallery-thumb" data-lb="3">
+        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80" alt="Visual Studio C# projects screenshot"/>
+        <span class="thumb-label">Visual Studio Assignment</span>
+      </div>
+      <div class="gallery-thumb" data-lb="0">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80" alt="Academy Cinemas project screenshot"/>
+        <span class="thumb-label">Academy Cinemas</span>
+      </div>
+      <div class="gallery-thumb" data-lb="1">
+        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80" alt="Portfolio website screenshot"/>
+        <span class="thumb-label">Portfolio Website</span>
+      </div>
+      <div class="gallery-thumb" data-lb="2">
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80" alt="JavaScript projects"/>
+        <span class="thumb-label">JavaScript Projects</span>
+      </div>
+      <div class="gallery-thumb" data-lb="3">
+        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80" alt="Visual Studio C# projects screenshot"/>
+        <span class="thumb-label">Visual Studio Assignment</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="cards-grid">
+
+    <article class="proj-card reveal">
+      <div class="proj-img">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=700&q=80" alt="Academy Cinemas"/>
+        <span class="open-lb" data-lb="0">&#128269; Open Lightbox</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags">
+          <span class="proj-tag">HTML</span>
+          <span class="proj-tag">CSS</span>
+          <span class="proj-tag">Bootstrap</span>
+        </div>
+        <h3 class="proj-title">Academy Cinemas</h3>
+        <p class="proj-desc">A responsive Bootstrap 4 cinema website with a navbar, movie cards with showtimes, and a membership signup form.</p>
+        <a href="https://github.com/Liudmila-Poliakova/HTML-and-CSS-Projects" target="_blank" class="proj-link">
+          View on GitHub
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="proj-card reveal">
+      <div class="proj-img">
+        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=700&q=80" alt="Portfolio Website"/>
+        <span class="open-lb" data-lb="1">&#128269; Open Lightbox</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags">
+          <span class="proj-tag">HTML</span>
+          <span class="proj-tag">CSS</span>
+          <span class="proj-tag">JavaScript</span>
+        </div>
+        <h3 class="proj-title">Portfolio Website</h3>
+        <p class="proj-desc">This portfolio — built from scratch with pure HTML, CSS, and JavaScript. Responsive, with smooth scrolling and a contact section.</p>
+        <a href="https://liudmila-poliakova.github.io/HTML-and-CSS-Projects/" target="_blank" class="proj-link">
+          View Live Site
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="proj-card reveal">
+      <div class="proj-img">
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=700&q=80" alt="JavaScript Projects"/>
+        <span class="open-lb" data-lb="2">&#128269; Open Lightbox</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags">
+          <span class="proj-tag">JavaScript</span>
+          <span class="proj-tag">In Progress</span>
+        </div>
+        <h3 class="proj-title">JavaScript Projects</h3>
+        <p class="proj-desc">A repository for JavaScript assignments and exercises completed as part of my course at Academy of Learning College.</p>
+        <a href="https://github.com/Liudmila-Poliakova/JavaScript-Projects" target="_blank" class="proj-link">
+          View on GitHub
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="proj-card reveal">
+      <div class="proj-img">
+        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=700&q=80" alt="Visual Studio Assignment"/>
+        <span class="open-lb" data-lb="3">&#128269; Open Lightbox</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags">
+          <span class="proj-tag">C#</span>
+          <span class="proj-tag">ASP.NET Core MVC</span>
+          <span class="proj-tag">Entity Framework</span>
+        </div>
+        <h3 class="proj-title">Visual Studio Assignment</h3>
+        <p class="proj-desc">A collection of C# and .NET coursework, from branching and OOP fundamentals to a full ASP.NET Core MVC car insurance app with Entity Framework, plus an EF6 Code-First database project.</p>
+        <a href="https://github.com/Liudmila-Poliakova/Visual-Studio-Assignment" target="_blank" class="proj-link">
+          View on GitHub
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="contact-inner reveal">
+    <p class="section-label">Get In Touch</p>
+    <h2 class="section-title">Let's <em>connect.</em></h2>
+    <p style="color:var(--muted); font-size:.95rem;">I'm open to feedback, collaboration, and opportunities as I continue learning.</p>
+    <div class="contact-links">
+      <a href="mailto:lpoliakova.aol@gmail.com" class="contact-row">
+        <span class="c-label">Email</span>
+        <span class="c-val">lpoliakova.aol@gmail.com ↗</span>
+      </a>
+      <a href="https://github.com/Liudmila-Poliakova" target="_blank" class="contact-row">
+        <span class="c-label">GitHub</span>
+        <span class="c-val">github.com/Liudmila-Poliakova ↗</span>
+      </a>
+      <a href="https://liudmila-poliakova.github.io/HTML-and-CSS-Projects/" target="_blank" class="contact-row">
+        <span class="c-label">Live Site</span>
+        <span class="c-val">liudmila-poliakova.github.io ↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; <span id="yr"></span> Liudmila Poliakova &mdash; Academy of Learning College, Toronto</p>
+</footer>
+
+<script>
+  /* ── CURSOR ── */
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .gallery-thumb, .proj-card, .pill, .stat-box').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+  });
+
+  /* ── NAV SCROLL CLASS ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  /* ── SMOOTH SCROLL ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) {
+        e.preventDefault();
+        t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  /* ── REVEAL ON SCROLL ── */
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('in'), i * 100);
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  /* ── LIGHTBOX ── */
+  const lbImages = [
+    { src: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&q=85', caption: 'Academy Cinemas — HTML & CSS · Bootstrap 4' },
+    { src: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=900&q=85',    caption: 'Portfolio Website — HTML · CSS · JavaScript' },
+    { src: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=900&q=85',    caption: 'JavaScript Projects — Academy of Learning College' },
+    { src: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=900&q=85', caption: 'Visual Studio Assignment — C# · ASP.NET Core MVC · Entity Framework' },
+  ];
+
+  let lbIndex = 0;
+  const lb      = document.getElementById('lightbox');
+  const lbImg   = document.getElementById('lb-img');
+  const lbCap   = document.getElementById('lb-caption');
+
+  function openLb(i) {
+    lbIndex = ((i % lbImages.length) + lbImages.length) % lbImages.length;
+    lbImg.src = lbImages[lbIndex].src;
+    lbImg.alt = lbImages[lbIndex].caption;
+    lbCap.textContent = lbImages[lbIndex].caption;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('lb-close').addEventListener('click', closeLb);
+  document.getElementById('lb-prev').addEventListener('click', () => openLb(lbIndex - 1));
+  document.getElementById('lb-next').addEventListener('click', () => openLb(lbIndex + 1));
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLb();
+    if (e.key === 'ArrowLeft')  openLb(lbIndex - 1);
+    if (e.key === 'ArrowRight') openLb(lbIndex + 1);
+  });
+
+  /* trigger from card overlay */
+  document.querySelectorAll('.open-lb').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      openLb(parseInt(el.dataset.lb));
+    });
+  });
+
+  /* trigger from scrolling strip */
+  document.querySelectorAll('.gallery-thumb').forEach(el => {
+    el.addEventListener('click', () => openLb(parseInt(el.dataset.lb)));
+  });
+
+  /* ── YEAR ── */
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
